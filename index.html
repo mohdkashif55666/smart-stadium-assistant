@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Smart Stadium Assistant | Real‑time Venue Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Smart Stadium | Real‑time Venue Assistant</title>
+    <!-- Google Fonts + Neutral CSS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv1xTjU0pC_gMo7oJe6_y53XuBPX9PhNI&callback=initMap&libraries=visualization"
@@ -13,17 +16,41 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>🏟️ Smart Stadium Assistant</h1>
-        <div id="map"></div>
-        <div id="info-panel">
-            <h3>📍 <span id="zone-name">None</span></h3>
-            <p>🚶 Crowd Level: <span id="crowd-level">—</span></p>
-            <p>⏱️ Est. Wait Time: <span id="wait-time">—</span></p>
-            <button id="join-queue-btn" disabled>✨ Join Digital Queue</button>
-            <div id="queue-status"></div>
+    <div class="app-container">
+        <!-- Minimal header -->
+        <header class="app-header">
+            <h1>🏟️ Smart Stadium</h1>
+            <p class="subhead">Real‑time crowd & queue intelligence</p>
+        </header>
+
+        <!-- Map with skeleton loader -->
+        <div class="map-wrapper">
+            <div id="map" class="stadium-map"></div>
+            <div id="map-skeleton" class="skeleton-map"></div>
+        </div>
+
+        <!-- Info card – minimalist design -->
+        <div class="info-card">
+            <div class="zone-badge">
+                <span class="zone-label">Selected zone</span>
+                <span id="zone-name" class="zone-name">—</span>
+            </div>
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-label">🚶 Crowd level</span>
+                    <span id="crowd-level" class="stat-value">—</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">⏱️ Est. wait</span>
+                    <span id="wait-time" class="stat-value">—</span>
+                </div>
+            </div>
+            <button id="join-queue-btn" class="btn-primary" disabled>Join digital queue</button>
+            <div id="queue-status" class="queue-status"></div>
         </div>
     </div>
+
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js"></script>

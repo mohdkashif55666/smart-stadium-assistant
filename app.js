@@ -1,3 +1,4 @@
+// Firebase config (your existing one)
 const firebaseConfig = {
     apiKey: "AIzaSyCe-HHNjKgvJPKxjEbK3wd0c4dBh2YBfiQ",
     authDomain: "smartstadium-ea49d.firebaseapp.com",
@@ -30,8 +31,17 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 17,
         center: stadiumCenter,
-        mapTypeId: 'roadmap'
+        mapTypeId: 'roadmap',
+        styles: [  // subtle neutral map style
+            { elementType: "geometry", stylers: [{ color: "#ebe9e1" }] },
+            { elementType: "labels.text.fill", stylers: [{ color: "#523c2c" }] },
+            { elementType: "labels.text.stroke", stylers: [{ color: "#f5f1e6" }] },
+            { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9d2d4" }] }
+        ]
     });
+
+    // Remove skeleton loader
+    document.querySelector('.map-wrapper').classList.add('map-loaded');
 
     for (const [id, zone] of Object.entries(zones)) {
         const marker = new google.maps.Marker({
@@ -43,27 +53,30 @@ function initMap() {
         marker.addListener('click', () => selectZone(id));
     }
 
+    // Real-time crowd updates from Firestore
     db.collection('crowdData').onSnapshot(snapshot => {
         snapshot.forEach(doc => {
             if (zones[doc.id]) {
                 zones[doc.id].crowd = doc.data().crowdLevel;
                 if (currentZone === doc.id) updateUI();
+                // Update marker color (simplified: just rebuild markers? quick fix: reload markers)
+                // For hackathon, we'll just update UI; marker color refresh can be done with full redraw
             }
         });
     });
 }
 
 function getMarkerIcon(crowdLevel) {
-    let color = 'green';
-    if (crowdLevel === 'medium') color = 'orange';
-    if (crowdLevel === 'high') color = 'red';
+    let color = '#10B981'; // emerald (low)
+    if (crowdLevel === 'medium') color = '#F59E0B'; // amber
+    if (crowdLevel === 'high') color = '#EF4444'; // red
     return {
         path: google.maps.SymbolPath.CIRCLE,
         scale: 12,
         fillColor: color,
-        fillOpacity: 0.8,
-        strokeWeight: 2,
-        strokeColor: 'white'
+        fillOpacity: 0.9,
+        strokeWeight: 1,
+        strokeColor: '#FFFFFF'
     };
 }
 
@@ -80,7 +93,7 @@ function updateUI() {
     let waitSec = zone.waitBase;
     if (zone.crowd === 'high') waitSec = 120;
     if (zone.crowd === 'medium') waitSec = 75;
-    document.getElementById('wait-time').innerText = `${waitSec} seconds`;
+    document.getElementById('wait-time').innerText = `${waitSec} sec`;
 }
 
 document.getElementById('join-queue-btn').addEventListener('click', async () => {
@@ -101,7 +114,7 @@ document.getElementById('join-queue-btn').addEventListener('click', async () => 
 
     await queueRef.set({ length: position }, { merge: true });
 
-    document.getElementById('queue-status').innerHTML = `✅ You are #${position} in queue. Estimated wait: ${Math.ceil(estimatedWait / 60)} min. You'll be notified when ready.`;
+    document.getElementById('queue-status').innerHTML = `✅ You are #${position} in queue. Est. ${Math.ceil(estimatedWait / 60)} min. You'll be notified.`;
 
     const unsubscribe = db.collection('queues').doc(currentZone).collection('entries').doc(currentQueueDocId)
         .onSnapshot(doc => {

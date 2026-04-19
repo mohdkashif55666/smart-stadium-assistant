@@ -1,3 +1,4 @@
+/* ---------- RESET & GLOBAL ---------- */
 * {
     margin: 0;
     padding: 0;
@@ -5,153 +6,204 @@
 }
 
 body {
-    font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #F9FAFB;
+    /* neutral gray-50 */
+    color: #111827;
+    /* gray-900 */
+    line-height: 1.5;
+    padding: 1.5rem;
     min-height: 100vh;
-    padding: 20px;
 }
 
-.container {
-    max-width: 1300px;
+.app-container {
+    max-width: 800px;
     margin: 0 auto;
 }
 
-/* Header with glow */
-h1 {
+/* ---------- HEADER (minimal) ---------- */
+.app-header {
+    margin-bottom: 1.75rem;
     text-align: center;
-    font-size: 2.2rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, #ffffff, #e0e7ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
 }
 
-/* Map card */
-#map {
-    height: 500px;
-    width: 100%;
+.app-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: #111827;
+}
+
+.subhead {
+    font-size: 0.9rem;
+    color: #6B7280;
+    /* gray-500 */
+    margin-top: 0.25rem;
+}
+
+/* ---------- MAP WITH SKELETON ---------- */
+.map-wrapper {
+    position: relative;
     border-radius: 24px;
-    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.2s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
 }
 
-#map:hover {
-    transform: scale(0.99);
+.stadium-map {
+    height: 400px;
+    width: 100%;
+    background: #E5E7EB;
 }
 
-/* Info panel – glassmorphism */
-#info-panel {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+.skeleton-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(110deg, #E5E7EB 8%, #F3F4F6 18%, #E5E7EB 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s linear infinite;
+    border-radius: 24px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* hide skeleton once map is loaded */
+.map-loaded .skeleton-map {
+    display: none;
+}
+
+/* ---------- INFO CARD (glass / neutral) ---------- */
+.info-card {
+    background: #FFFFFF;
     border-radius: 28px;
-    padding: 24px 28px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
+    padding: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.2s ease;
 }
 
-#info-panel h3 {
-    font-size: 1.7rem;
+.zone-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #F3F4F6;
+    margin-bottom: 1.25rem;
+}
+
+.zone-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6B7280;
+}
+
+.zone-name {
+    font-size: 1.3rem;
     font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    background: #F3F4F6;
+    padding: 0.2rem 0.8rem;
+    border-radius: 40px;
+    color: #111827;
 }
 
-#info-panel p {
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    flex: 1;
+    background: #F9FAFB;
+    border-radius: 20px;
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6B7280;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
     font-size: 1.2rem;
-    margin: 12px 0;
-    color: #334155;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 10px;
-}
-
-#zone-name {
     font-weight: 700;
-    color: #4f46e5;
-    background: #e0e7ff;
-    padding: 4px 12px;
-    border-radius: 40px;
-    display: inline-block;
+    color: #111827;
 }
 
-#crowd-level,
-#wait-time {
-    font-weight: 700;
-    background: #f1f5f9;
-    padding: 4px 12px;
-    border-radius: 40px;
-}
-
-button {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+/* Primary button – minimal but distinct */
+.btn-primary {
+    width: 100%;
+    background: #111827;
     color: white;
     border: none;
-    padding: 14px 28px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
     border-radius: 60px;
     cursor: pointer;
-    margin-top: 16px;
     transition: all 0.2s ease;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    font-family: inherit;
+    margin-top: 0.5rem;
 }
 
-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+.btn-primary:hover:not(:disabled) {
+    background: #1F2937;
+    transform: translateY(-1px);
 }
 
-button:disabled {
-    background: #cbd5e1;
-    box-shadow: none;
-    transform: none;
+.btn-primary:disabled {
+    background: #E5E7EB;
+    color: #9CA3AF;
     cursor: not-allowed;
 }
 
-#queue-status {
-    margin-top: 20px;
-    padding: 16px;
-    background: #f0fdf4;
-    border-left: 5px solid #22c55e;
+.queue-status {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #F0FDF4;
     border-radius: 20px;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: #166534;
     font-weight: 500;
+    text-align: center;
+    border-left: 3px solid #10B981;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     body {
-        padding: 12px;
+        padding: 1rem;
     }
 
-    h1 {
-        font-size: 1.6rem;
+    .stadium-map {
+        height: 320px;
     }
 
-    #map {
-        height: 350px;
+    .stats-row {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
-    #info-panel {
-        padding: 16px;
-    }
-
-    #info-panel h3 {
-        font-size: 1.3rem;
+    .zone-name {
+        font-size: 1rem;
     }
 }

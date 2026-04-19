@@ -3,154 +3,119 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Staff Dashboard – Smart Stadium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Staff Dashboard | Smart Stadium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional admin-specific tweaks */
-        #admin-controls,
-        #queue-management {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+        /* additional admin overrides */
+        .admin-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .control-card {
+            background: #FFFFFF;
             border-radius: 28px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #E5E7EB;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .control-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #111827;
         }
 
         select,
-        button {
-            margin: 10px 5px;
-            padding: 10px 16px;
+        .admin-btn {
+            padding: 0.6rem 1rem;
             border-radius: 40px;
-            border: 1px solid #cbd5e1;
             font-family: inherit;
+            font-size: 0.85rem;
+            border: 1px solid #D1D5DB;
+            background: white;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
-        button {
-            background: #4f46e5;
+        .admin-btn {
+            background: #111827;
             color: white;
             border: none;
-            width: auto;
-            display: inline-block;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .admin-btn:hover {
+            background: #1F2937;
         }
 
         #queue-list {
-            background: #f8fafc;
-            padding: 12px;
+            background: #F9FAFB;
+            padding: 1rem;
             border-radius: 20px;
-            margin-top: 12px;
+            margin-top: 1rem;
             font-family: monospace;
+            font-size: 0.8rem;
+            color: #374151;
+        }
+
+        #map {
+            height: 320px;
+            border-radius: 24px;
+            overflow: hidden;
         }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<!DOCTYPE html>
-<html lang=" en">
-    <head>
-        <meta charset="UTF-8">
-            <title>Staff Dashboard – Smart Stadium</title>
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-                <link rel="stylesheet" href="style.css">
-                    <style>
-        /* Additional admin-specific tweaks */
-                        #admin-controls, #queue-management {
-                            background: rgba(255,255,255,0.95);
-                        backdrop-filter: blur(10px);
-                        border-radius: 28px;
-                        padding: 20px;
-                        margin-top: 20px;
-                        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-        }
-                        select, button {
-                            margin: 10px 5px;
-                        padding: 10px 16px;
-                        border-radius: 40px;
-                        border: 1px solid #cbd5e1;
-                        font-family: inherit;
-        }
-                        button {
-                            background: #4f46e5;
-                        color: white;
-                        border: none;
-                        width: auto;
-                        display: inline-block;
-        }
-                        #queue-list {
-                            background: #f8fafc;
-                        padding: 12px;
-                        border-radius: 20px;
-                        margin-top: 12px;
-                        font-family: monospace;
-        }
-                    </style>
-                    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initAdminMap&libraries=visualization" async defer></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCv1xTjU0pC_gMo7oJe6_y53XuBPX9PhNI&callback=initAdminMap&libraries=visualization"
+        async defer></script>
 </head>
 
 <body>
-    <div class="container">
-        <h1>🎛️ Venue Control Dashboard</h1>
-        <div id="map" style="height: 400px;"></div>
-        <div id="admin-controls">
-            <h3>Update Crowd Level</h3>
-            <select id="zone-select">
-                <option value="gate_a">Gate A</option>
-                <option value="concessions">Main Concessions</option>
-                <option value="restrooms">Restrooms East</option>
-            </select>
-            <select id="crowd-select">
-                <option value="low">🟢 Low</option>
-                <option value="medium">🟠 Medium</option>
-                <option value="high">🔴 High</option>
-            </select>
-            <button id="update-crowd">Update</button>
-        </div>
-        <div id="queue-management">
-            <h3>Manage Queues</h3>
-            <select id="queue-zone">
-                <option value="gate_a">Gate A Queue</option>
-                <option value="concessions">Concessions Queue</option>
-                <option value="restrooms">Restrooms Queue</option>
-            </select>
-            <button id="call-next">📢 Call Next Person</button>
-            <div id="queue-list"></div>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>🎛️ Venue Control</h1>
+            <p class="subhead">Staff dashboard – live crowd & queue management</p>
+        </header>
+
+        <div class="admin-grid">
+            <div class="control-card">
+                <h3>Update crowd level</h3>
+                <select id="zone-select">
+                    <option value="gate_a">Gate A</option>
+                    <option value="concessions">Main Concessions</option>
+                    <option value="restrooms">Restrooms East</option>
+                </select>
+                <select id="crowd-select">
+                    <option value="low">🟢 Low</option>
+                    <option value="medium">🟠 Medium</option>
+                    <option value="high">🔴 High</option>
+                </select>
+                <button id="update-crowd" class="admin-btn">Update</button>
+            </div>
+
+            <div class="control-card">
+                <h3>Queue manager</h3>
+                <select id="queue-zone">
+                    <option value="gate_a">Gate A queue</option>
+                    <option value="concessions">Concessions queue</option>
+                    <option value="restrooms">Restrooms queue</option>
+                </select>
+                <button id="call-next" class="admin-btn">Call next person</button>
+                <div id="queue-list">Waiting: —</div>
+            </div>
+
+            <div class="control-card">
+                <h3>Venue map (live)</h3>
+                <div id="map"></div>
+            </div>
         </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="admin.js"></script>
-</body>
 
-</html>&callback=initAdminMap&libraries=visualization" async defer></script>
-</head>
-
-<body>
-    <div class="container">
-        <h1>🎛️ Venue Control Dashboard</h1>
-        <div id="map" style="height: 400px;"></div>
-        <div id="admin-controls">
-            <h3>Update Crowd Level</h3>
-            <select id="zone-select">
-                <option value="gate_a">Gate A</option>
-                <option value="concessions">Main Concessions</option>
-                <option value="restrooms">Restrooms East</option>
-            </select>
-            <select id="crowd-select">
-                <option value="low">🟢 Low</option>
-                <option value="medium">🟠 Medium</option>
-                <option value="high">🔴 High</option>
-            </select>
-            <button id="update-crowd">Update</button>
-        </div>
-        <div id="queue-management">
-            <h3>Manage Queues</h3>
-            <select id="queue-zone">
-                <option value="gate_a">Gate A Queue</option>
-                <option value="concessions">Concessions Queue</option>
-                <option value="restrooms">Restrooms Queue</option>
-            </select>
-            <button id="call-next">📢 Call Next Person</button>
-            <div id="queue-list"></div>
-        </div>
-    </div>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="admin.js"></script>
