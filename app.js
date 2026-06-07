@@ -1,6 +1,6 @@
 // Firebase config (your existing one)
 const firebaseConfig = {
-    apiKey: "AIzaSyCe-HHNjKgvJPKxjEbK3wd0c4dBh2YBfiQ",
+    apiKey: "",
     authDomain: "smartstadium-ea49d.firebaseapp.com",
     projectId: "smartstadium-ea49d",
     storageBucket: "smartstadium-ea49d.firebasestorage.app",
